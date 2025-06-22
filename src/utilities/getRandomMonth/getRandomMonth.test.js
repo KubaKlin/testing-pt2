@@ -1,7 +1,7 @@
 import getRandomMonth from './getRandomMonth';
-import { getRandomNumberInRange } from '../getRandomNumberInRange/getRandomNumberInRange';
+import { getRandomNumberInRange } from './getRandomNumberInRange';
 
-jest.mock('../getRandomNumberInRange/getRandomNumberInRange', () => ({
+jest.mock('./getRandomNumberInRange', () => ({
   getRandomNumberInRange: jest.fn(),
 }));
 
@@ -38,11 +38,11 @@ describe('The getRandomMonth function', () => {
 
     testIndices.forEach((index, i) => {
       getRandomNumberInRange.mockReturnValue(index);
-      
+
       const result = getRandomMonth();
-      
+
       expect(result).toBe(expectedResults[i]);
       expect(getRandomNumberInRange).toHaveBeenCalledWith(0, 11);
     });
   });
-}); 
+});

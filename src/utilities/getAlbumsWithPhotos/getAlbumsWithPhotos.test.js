@@ -16,18 +16,18 @@ describe('The getAlbumsWithPhotos function', () => {
       {
         userId: 1,
         id: 1,
-        title: 'quidem molestiae enim'
+        title: 'quidem molestiae enim',
       },
       {
         userId: 1,
         id: 2,
-        title: 'sunt qui excepturi placeat culpa'
+        title: 'sunt qui excepturi placeat culpa',
       },
       {
         userId: 2,
         id: 3,
-        title: 'omnis laborum odio'
-      }
+        title: 'omnis laborum odio',
+      },
     ]);
 
     getPhotos.mockResolvedValue([
@@ -36,29 +36,29 @@ describe('The getAlbumsWithPhotos function', () => {
         id: 1,
         title: 'accusamus beatae ad facilis cum similique qui sunt',
         url: 'https://via.placeholder.com/600/92c952',
-        thumbnailUrl: 'https://via.placeholder.com/150/92c952'
+        thumbnailUrl: 'https://via.placeholder.com/150/92c952',
       },
       {
         albumId: 1,
         id: 2,
         title: 'reprehenderit est deserunt velit ipsam',
         url: 'https://via.placeholder.com/600/771796',
-        thumbnailUrl: 'https://via.placeholder.com/150/771796'
+        thumbnailUrl: 'https://via.placeholder.com/150/771796',
       },
       {
         albumId: 2,
         id: 3,
         title: 'officia porro iure quia iusto qui ipsa ut modi',
         url: 'https://via.placeholder.com/600/24f355',
-        thumbnailUrl: 'https://via.placeholder.com/150/24f355'
+        thumbnailUrl: 'https://via.placeholder.com/150/24f355',
       },
       {
         albumId: 3,
         id: 4,
         title: 'culpa odio esse rerum omnis laboriosam voluptate repudiandae',
         url: 'https://via.placeholder.com/600/d32776',
-        thumbnailUrl: 'https://via.placeholder.com/150/d32776'
-      }
+        thumbnailUrl: 'https://via.placeholder.com/150/d32776',
+      },
     ]);
   });
 
@@ -75,16 +75,16 @@ describe('The getAlbumsWithPhotos function', () => {
           id: 1,
           title: 'accusamus beatae ad facilis cum similique qui sunt',
           url: 'https://via.placeholder.com/600/92c952',
-          thumbnailUrl: 'https://via.placeholder.com/150/92c952'
+          thumbnailUrl: 'https://via.placeholder.com/150/92c952',
         },
         {
           albumId: 1,
           id: 2,
           title: 'reprehenderit est deserunt velit ipsam',
           url: 'https://via.placeholder.com/600/771796',
-          thumbnailUrl: 'https://via.placeholder.com/150/771796'
-        }
-      ]
+          thumbnailUrl: 'https://via.placeholder.com/150/771796',
+        },
+      ],
     });
 
     expect(result[1]).toEqual({
@@ -97,9 +97,9 @@ describe('The getAlbumsWithPhotos function', () => {
           id: 3,
           title: 'officia porro iure quia iusto qui ipsa ut modi',
           url: 'https://via.placeholder.com/600/24f355',
-          thumbnailUrl: 'https://via.placeholder.com/150/24f355'
-        }
-      ]
+          thumbnailUrl: 'https://via.placeholder.com/150/24f355',
+        },
+      ],
     });
 
     expect(result[2]).toEqual({
@@ -112,16 +112,21 @@ describe('The getAlbumsWithPhotos function', () => {
           id: 4,
           title: 'culpa odio esse rerum omnis laboriosam voluptate repudiandae',
           url: 'https://via.placeholder.com/600/d32776',
-          thumbnailUrl: 'https://via.placeholder.com/150/d32776'
-        }
-      ]
+          thumbnailUrl: 'https://via.placeholder.com/150/d32776',
+        },
+      ],
     });
   });
 
-  it('should call getAlbums and getPhotos functions', async () => {
+  it('should call getAlbums function', async () => {
     await getAlbumsWithPhotos();
 
     expect(getAlbums).toHaveBeenCalled();
+  });
+
+  it('should call getPhotos function', async () => {
+    await getAlbumsWithPhotos();
+
     expect(getPhotos).toHaveBeenCalled();
   });
 
@@ -130,8 +135,8 @@ describe('The getAlbumsWithPhotos function', () => {
       {
         userId: 1,
         id: 4,
-        title: 'Album Without Photos'
-      }
+        title: 'Album Without Photos',
+      },
     ]);
     getPhotos.mockResolvedValue([]);
 
@@ -141,7 +146,7 @@ describe('The getAlbumsWithPhotos function', () => {
       userId: 1,
       id: 4,
       title: 'Album Without Photos',
-      photos: []
+      photos: [],
     });
   });
 
@@ -160,7 +165,7 @@ describe('The getAlbumsWithPhotos function', () => {
     });
 
     await expect(getAlbumsWithPhotos()).rejects.toThrow(
-      'Failed to fetch albums with photos: Failed to fetch albums'
+      'Failed to fetch albums with photos: Failed to fetch albums',
     );
   });
 
@@ -170,7 +175,7 @@ describe('The getAlbumsWithPhotos function', () => {
     });
 
     await expect(getAlbumsWithPhotos()).rejects.toThrow(
-      'Failed to fetch albums with photos: Failed to fetch photos'
+      'Failed to fetch albums with photos: Failed to fetch photos',
     );
   });
-}); 
+});

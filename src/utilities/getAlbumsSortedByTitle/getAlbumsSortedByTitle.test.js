@@ -32,7 +32,7 @@ describe('The getAlbumsSortedByTitle function', () => {
         albumId: 1,
         id: 5,
         title: 'natus nisi omnis corporis facere molestiae rerum in',
-      }
+      },
     ]);
   });
 
@@ -41,13 +41,17 @@ describe('The getAlbumsSortedByTitle function', () => {
 
     expect(getAlbums).toHaveBeenCalled();
     expect(result).toHaveLength(5);
-    
+
     // Check that the longest title is first
-    expect(result[0].title).toBe('culpa odio esse rerum omnis laboriosam voluptate repudiandae');
+    expect(result[0].title).toBe(
+      'culpa odio esse rerum omnis laboriosam voluptate repudiandae',
+    );
     expect(result[0].title.length).toBe(60);
-    
+
     // Check that the shortest title is last
-    expect(result[result.length - 1].title).toBe('reprehenderit est deserunt velit ipsam');
+    expect(result[result.length - 1].title).toBe(
+      'reprehenderit est deserunt velit ipsam',
+    );
     expect(result[result.length - 1].title.length).toBe(38);
   });
 
@@ -55,7 +59,7 @@ describe('The getAlbumsSortedByTitle function', () => {
     const result = await getAlbumsSortedByTitle();
 
     const expectedTitleLengths = [60, 51, 50, 46, 38];
-    const actualTitleLengths = result.map(album => album.title.length);
+    const actualTitleLengths = result.map((album) => album.title.length);
 
     expect(actualTitleLengths).toEqual(expectedTitleLengths);
   });
@@ -80,7 +84,7 @@ describe('The getAlbumsSortedByTitle function', () => {
         albumId: 1,
         id: 2,
         title: 'short title two',
-      }
+      },
     ]);
 
     const result = await getAlbumsSortedByTitle();
@@ -99,4 +103,4 @@ describe('The getAlbumsSortedByTitle function', () => {
     expect(getAlbums).toHaveBeenCalled();
     expect(result).toEqual([]);
   });
-}); 
+});

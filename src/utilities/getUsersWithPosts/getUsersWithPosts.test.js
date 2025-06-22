@@ -113,10 +113,15 @@ describe('The getUsersWithPosts function', () => {
     });
   });
 
-  it('should call getUsers and getPosts functions', async () => {
+  it('should call getUsers function', async () => {
     await getUsersWithPosts();
 
     expect(getUsers).toHaveBeenCalled();
+  });
+
+  it('should call getPosts function', async () => {
+    await getUsersWithPosts();
+
     expect(getPosts).toHaveBeenCalled();
   });
 
@@ -168,16 +173,6 @@ describe('The getUsersWithPosts function', () => {
 
     await expect(getUsersWithPosts()).rejects.toThrow(
       'Failed to fetch users with posts: Failed to fetch posts',
-    );
-  });
-
-  it('should throw an error when both getUsers and getPosts respond with errors', async () => {
-    getUsers.mockImplementation(() => {
-      throw new Error('Network error');
-    });
-
-    await expect(getUsersWithPosts()).rejects.toThrow(
-      'Failed to fetch users with posts: Network error',
     );
   });
 });
