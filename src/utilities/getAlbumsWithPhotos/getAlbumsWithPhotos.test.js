@@ -111,7 +111,8 @@ describe('the getAlbumsWithPhotos function', () => {
           {
             albumId: 3,
             id: 4,
-            title: 'culpa odio esse rerum omnis laboriosam voluptate repudiandae',
+            title:
+              'culpa odio esse rerum omnis laboriosam voluptate repudiandae',
             url: 'https://via.placeholder.com/600/d32776',
             thumbnailUrl: 'https://via.placeholder.com/150/d32776',
           },
