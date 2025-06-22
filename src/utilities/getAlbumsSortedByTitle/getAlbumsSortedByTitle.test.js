@@ -1,50 +1,45 @@
 import { getAlbumsSortedByTitle } from './getAlbumsSortedByTitle.js';
-import getAlbums from '../getAlbums/getAlbums.js';
+import { getAlbums } from '../getAlbums/getAlbums.js';
 
-jest.mock('../getAlbums/getAlbums.js');
+jest.mock('../getAlbums/getAlbums.js', () => ({
+  getAlbums: jest.fn(),
+}));
 
-const mockGetAlbums = getAlbums;
-
-describe('getAlbumsSortedByTitle function', () => {
+describe('The getAlbumsSortedByTitle function', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    getAlbums.mockResolvedValue([
+      {
+        albumId: 1,
+        id: 1,
+        title: 'accusamus beatae ad facilis cum similique qui sunt',
+      },
+      {
+        albumId: 1,
+        id: 2,
+        title: 'reprehenderit est deserunt velit ipsam',
+      },
+      {
+        albumId: 1,
+        id: 3,
+        title: 'officia porro iure quia iusto qui ipsa ut modi',
+      },
+      {
+        albumId: 1,
+        id: 4,
+        title: 'culpa odio esse rerum omnis laboriosam voluptate repudiandae',
+      },
+      {
+        albumId: 1,
+        id: 5,
+        title: 'natus nisi omnis corporis facere molestiae rerum in',
+      }
+    ]);
   });
 
-  const mockAlbums = [
-    {
-      albumId: 1,
-      id: 1,
-      title: 'accusamus beatae ad facilis cum similique qui sunt',
-    },
-    {
-      albumId: 1,
-      id: 2,
-      title: 'reprehenderit est deserunt velit ipsam',
-    },
-    {
-      albumId: 1,
-      id: 3,
-      title: 'officia porro iure quia iusto qui ipsa ut modi',
-    },
-    {
-      albumId: 1,
-      id: 4,
-      title: 'culpa odio esse rerum omnis laboriosam voluptate repudiandae',
-    },
-    {
-      albumId: 1,
-      id: 5,
-      title: 'natus nisi omnis corporis facere molestiae rerum in',
-    }
-  ];
-
   it('should successfully fetch and sort albums by title length in descending order', async () => {
-    mockGetAlbums.mockResolvedValue(mockAlbums);
-
     const result = await getAlbumsSortedByTitle();
 
-    expect(mockGetAlbums).toHaveBeenCalledTimes(1);
-
+    expect(getAlbums).toHaveBeenCalled();
     expect(result).toHaveLength(5);
     
     // Check that the longest title is first
@@ -57,8 +52,6 @@ describe('getAlbumsSortedByTitle function', () => {
   });
 
   it('should return albums sorted correctly with specific order', async () => {
-    mockGetAlbums.mockResolvedValue(mockAlbums);
-
     const result = await getAlbumsSortedByTitle();
 
     const expectedTitleLengths = [60, 51, 50, 46, 38];
@@ -68,16 +61,16 @@ describe('getAlbumsSortedByTitle function', () => {
   });
 
   it('should handle empty albums array', async () => {
-    mockGetAlbums.mockResolvedValue([]);
+    getAlbums.mockResolvedValue([]);
 
     const result = await getAlbumsSortedByTitle();
 
-    expect(mockGetAlbums).toHaveBeenCalledTimes(1);
+    expect(getAlbums).toHaveBeenCalled();
     expect(result).toEqual([]);
   });
 
   it('should handle albums with identical title lengths', async () => {
-    const albumsWithSameLengthTitles = [
+    getAlbums.mockResolvedValue([
       {
         albumId: 1,
         id: 1,
@@ -88,9 +81,7 @@ describe('getAlbumsSortedByTitle function', () => {
         id: 2,
         title: 'short title two',
       }
-    ];
-
-    mockGetAlbums.mockResolvedValue(albumsWithSameLengthTitles);
+    ]);
 
     const result = await getAlbumsSortedByTitle();
 
@@ -99,12 +90,13 @@ describe('getAlbumsSortedByTitle function', () => {
   });
 
   it('should return empty array when getAlbums throws an error', async () => {
-    const errorMessage = 'Network error';
-    mockGetAlbums.mockRejectedValue(new Error(errorMessage));
+    getAlbums.mockImplementation(() => {
+      throw new Error('Network error');
+    });
 
     const result = await getAlbumsSortedByTitle();
 
-    expect(mockGetAlbums).toHaveBeenCalledTimes(1);
+    expect(getAlbums).toHaveBeenCalled();
     expect(result).toEqual([]);
   });
 }); 

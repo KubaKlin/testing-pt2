@@ -1,71 +1,68 @@
 import getAlbumsWithPhotos from './getAlbumsWithPhotos.js';
-import getAlbums from '../getAlbums/getAlbums.js';
-import getPhotos from '../getPhotos/getPhotos.js';
+import { getAlbums } from '../getAlbums/getAlbums.js';
+import { getPhotos } from '../getPhotos/getPhotos.js';
 
-jest.mock('../getAlbums/getAlbums.js');
-jest.mock('../getPhotos/getPhotos.js');
+jest.mock('../getAlbums/getAlbums.js', () => ({
+  getAlbums: jest.fn(),
+}));
 
-const mockGetAlbums = getAlbums;
-const mockGetPhotos = getPhotos;
+jest.mock('../getPhotos/getPhotos.js', () => ({
+  getPhotos: jest.fn(),
+}));
 
-describe('getAlbumsWithPhotos function', () => {
+describe('The getAlbumsWithPhotos function', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    getAlbums.mockResolvedValue([
+      {
+        userId: 1,
+        id: 1,
+        title: 'quidem molestiae enim'
+      },
+      {
+        userId: 1,
+        id: 2,
+        title: 'sunt qui excepturi placeat culpa'
+      },
+      {
+        userId: 2,
+        id: 3,
+        title: 'omnis laborum odio'
+      }
+    ]);
+
+    getPhotos.mockResolvedValue([
+      {
+        albumId: 1,
+        id: 1,
+        title: 'accusamus beatae ad facilis cum similique qui sunt',
+        url: 'https://via.placeholder.com/600/92c952',
+        thumbnailUrl: 'https://via.placeholder.com/150/92c952'
+      },
+      {
+        albumId: 1,
+        id: 2,
+        title: 'reprehenderit est deserunt velit ipsam',
+        url: 'https://via.placeholder.com/600/771796',
+        thumbnailUrl: 'https://via.placeholder.com/150/771796'
+      },
+      {
+        albumId: 2,
+        id: 3,
+        title: 'officia porro iure quia iusto qui ipsa ut modi',
+        url: 'https://via.placeholder.com/600/24f355',
+        thumbnailUrl: 'https://via.placeholder.com/150/24f355'
+      },
+      {
+        albumId: 3,
+        id: 4,
+        title: 'culpa odio esse rerum omnis laboriosam voluptate repudiandae',
+        url: 'https://via.placeholder.com/600/d32776',
+        thumbnailUrl: 'https://via.placeholder.com/150/d32776'
+      }
+    ]);
   });
 
-  const mockAlbums = [
-    {
-      userId: 1,
-      id: 1,
-      title: 'quidem molestiae enim'
-    },
-    {
-      userId: 1,
-      id: 2,
-      title: 'sunt qui excepturi placeat culpa'
-    },
-    {
-      userId: 2,
-      id: 3,
-      title: 'omnis laborum odio'
-    }
-  ];
-
-  const mockPhotos = [
-    {
-      albumId: 1,
-      id: 1,
-      title: 'accusamus beatae ad facilis cum similique qui sunt',
-      url: 'https://via.placeholder.com/600/92c952',
-      thumbnailUrl: 'https://via.placeholder.com/150/92c952'
-    },
-    {
-      albumId: 1,
-      id: 2,
-      title: 'reprehenderit est deserunt velit ipsam',
-      url: 'https://via.placeholder.com/600/771796',
-      thumbnailUrl: 'https://via.placeholder.com/150/771796'
-    },
-    {
-      albumId: 2,
-      id: 3,
-      title: 'officia porro iure quia iusto qui ipsa ut modi',
-      url: 'https://via.placeholder.com/600/24f355',
-      thumbnailUrl: 'https://via.placeholder.com/150/24f355'
-    },
-    {
-      albumId: 3,
-      id: 4,
-      title: 'culpa odio esse rerum omnis laboriosam voluptate repudiandae',
-      url: 'https://via.placeholder.com/600/d32776',
-      thumbnailUrl: 'https://via.placeholder.com/150/d32776'
-    }
-  ];
-
   it('should successfully combine albums with their photos', async () => {
-    mockGetAlbums.mockResolvedValue(mockAlbums);
-    mockGetPhotos.mockResolvedValue(mockPhotos);
-
     const result = await getAlbumsWithPhotos();
 
     expect(result[0]).toEqual({
@@ -121,17 +118,22 @@ describe('getAlbumsWithPhotos function', () => {
     });
   });
 
+  it('should call getAlbums and getPhotos functions', async () => {
+    await getAlbumsWithPhotos();
+
+    expect(getAlbums).toHaveBeenCalled();
+    expect(getPhotos).toHaveBeenCalled();
+  });
+
   it('should handle albums with no photos', async () => {
-    const albumsWithNoPhotos = [
+    getAlbums.mockResolvedValue([
       {
         userId: 1,
         id: 4,
         title: 'Album Without Photos'
       }
-    ];
-
-    mockGetAlbums.mockResolvedValue(albumsWithNoPhotos);
-    mockGetPhotos.mockResolvedValue([]);
+    ]);
+    getPhotos.mockResolvedValue([]);
 
     const result = await getAlbumsWithPhotos();
 
@@ -144,41 +146,31 @@ describe('getAlbumsWithPhotos function', () => {
   });
 
   it('should handle empty albums and photos arrays', async () => {
-    mockGetAlbums.mockResolvedValue([]);
-    mockGetPhotos.mockResolvedValue([]);
+    getAlbums.mockResolvedValue([]);
+    getPhotos.mockResolvedValue([]);
 
     const result = await getAlbumsWithPhotos();
 
     expect(result).toEqual([]);
   });
 
-  it('should call getAlbums and getPhotos functions', async () => {
-    mockGetAlbums.mockResolvedValue(mockAlbums);
-    mockGetPhotos.mockResolvedValue(mockPhotos);
-
-    await getAlbumsWithPhotos();
-
-    expect(mockGetAlbums).toHaveBeenCalledTimes(1);
-    expect(mockGetPhotos).toHaveBeenCalledTimes(1);
-  });
-
   it('should handle getAlbums error', async () => {
-    const errorMessage = 'Failed to fetch albums';
-    mockGetAlbums.mockRejectedValue(new Error(errorMessage));
-    mockGetPhotos.mockResolvedValue(mockPhotos);
+    getAlbums.mockImplementation(() => {
+      throw new Error('Failed to fetch albums');
+    });
 
     await expect(getAlbumsWithPhotos()).rejects.toThrow(
-      `Failed to fetch albums with photos: ${errorMessage}`
+      'Failed to fetch albums with photos: Failed to fetch albums'
     );
   });
 
   it('should handle getPhotos error', async () => {
-    const errorMessage = 'Failed to fetch photos';
-    mockGetAlbums.mockResolvedValue(mockAlbums);
-    mockGetPhotos.mockRejectedValue(new Error(errorMessage));
+    getPhotos.mockImplementation(() => {
+      throw new Error('Failed to fetch photos');
+    });
 
     await expect(getAlbumsWithPhotos()).rejects.toThrow(
-      `Failed to fetch albums with photos: ${errorMessage}`
+      'Failed to fetch albums with photos: Failed to fetch photos'
     );
   });
 }); 

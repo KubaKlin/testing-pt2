@@ -1,4 +1,4 @@
-import getAlbums from '../getAlbums/getAlbums';
+import { getAlbums } from '../getAlbums/getAlbums';
 
 export async function getAlbumsSortedByTitle() {
   try {

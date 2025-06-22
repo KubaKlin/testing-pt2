@@ -1,5 +1,5 @@
-import getAlbums from '../getAlbums/getAlbums';
-import getPhotos from '../getPhotos/getPhotos';
+import { getAlbums } from '../getAlbums/getAlbums';
+import { getPhotos } from '../getPhotos/getPhotos';
 
 const getAlbumsWithPhotos = async () => {
   try {

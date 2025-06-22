@@ -1,5 +1,5 @@
-import getUsers from '../getUsers/getUsers';
-import getPosts from '../getPosts/getPosts';
+import { getUsers } from '../getUsers/getUsers';
+import { getPosts } from '../getPosts/getPosts';
 
 const getUsersWithPosts = async () => {
   try {

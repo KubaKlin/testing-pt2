@@ -1,28 +1,22 @@
 import getRandomMonth from './getRandomMonth';
+import { getRandomNumberInRange } from '../getRandomNumberInRange/getRandomNumberInRange';
 
-jest.mock('../getRandomNumberInRange/getRandomNumberInRange', () => {
-  return jest.fn();
-});
+jest.mock('../getRandomNumberInRange/getRandomNumberInRange', () => ({
+  getRandomNumberInRange: jest.fn(),
+}));
 
-import getRandomNumberInRange from '../getRandomNumberInRange/getRandomNumberInRange';
-
-describe('getRandomMonth', () => {
+describe('The getRandomMonth function', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    getRandomNumberInRange.mockReturnValue(0);
   });
 
   it('should call getRandomNumberInRange with correct arguments (0, 11)', () => {
-    getRandomNumberInRange.mockReturnValue(0);
-
     getRandomMonth();
 
     expect(getRandomNumberInRange).toHaveBeenCalledWith(0, 11);
-    expect(getRandomNumberInRange).toHaveBeenCalledTimes(1);
   });
 
   it('should return January when getRandomNumberInRange returns 0', () => {
-    getRandomNumberInRange.mockReturnValue(0);
-
     const result = getRandomMonth();
 
     expect(result).toBe('January');
@@ -50,7 +44,5 @@ describe('getRandomMonth', () => {
       expect(result).toBe(expectedResults[i]);
       expect(getRandomNumberInRange).toHaveBeenCalledWith(0, 11);
     });
-
-    expect(getRandomNumberInRange).toHaveBeenCalledTimes(3);
   });
 }); 

@@ -1,4 +1,4 @@
-import getRandomNumberInRange from "../getRandomNumberInRange/getRandomNumberInRange";
+import { getRandomNumberInRange } from "../getRandomNumberInRange/getRandomNumberInRange";
 
 const getRandomMonth = () => {
   const months = [

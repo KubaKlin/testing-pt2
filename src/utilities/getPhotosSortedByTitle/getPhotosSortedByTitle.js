@@ -1,4 +1,4 @@
-import getPhotos from '../getPhotos/getPhotos';
+import { getPhotos } from '../getPhotos/getPhotos';
 
 export async function getPhotosSortedByTitle() {
   try {
