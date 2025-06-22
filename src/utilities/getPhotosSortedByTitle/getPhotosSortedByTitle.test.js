@@ -47,32 +47,49 @@ describe('the getPhotosSortedByTitle function', () => {
       ]);
     });
 
-    it('should fetch and sort photos by title length in descending order', async () => {
-      const result = await getPhotosSortedByTitle();
+    describe('calling the function', () => {
+      it('should call getPhotos', async () => {
+        await getPhotosSortedByTitle();
 
-      expect(getPhotos).toHaveBeenCalled();
-      expect(result).toHaveLength(5);
-
-      // Check that the longest title is first
-      expect(result[0].title).toBe(
-        'culpa odio esse rerum omnis laboriosam voluptate repudiandae',
-      );
-      expect(result[0].title.length).toBe(60);
-
-      // Check that the shortest title is last
-      expect(result[result.length - 1].title).toBe(
-        'reprehenderit est deserunt velit ipsam',
-      );
-      expect(result[result.length - 1].title.length).toBe(38);
+        expect(getPhotos).toHaveBeenCalled();
+      });
     });
 
-    it('should return photos sorted correctly with specific order', async () => {
-      const result = await getPhotosSortedByTitle();
+    describe('returning the result', () => {
+      it('should return correct number of photos', async () => {
+        const result = await getPhotosSortedByTitle();
 
-      const expectedTitleLengths = [60, 51, 50, 46, 38];
-      const actualTitleLengths = result.map((photo) => photo.title.length);
+        expect(result).toHaveLength(5);
+      });
 
-      expect(actualTitleLengths).toEqual(expectedTitleLengths);
+      it('should return photos sorted correctly with specific order', async () => {
+        const result = await getPhotosSortedByTitle();
+
+        const expectedTitleLengths = [60, 51, 50, 46, 38];
+        const actualTitleLengths = result.map((photo) => photo.title.length);
+
+        expect(actualTitleLengths).toEqual(expectedTitleLengths);
+      });
+    });
+
+    describe('checking the longest title', () => {
+      it('should have the longest title first', async () => {
+        const result = await getPhotosSortedByTitle();
+
+        expect(result[0].title).toBe(
+          'culpa odio esse rerum omnis laboriosam voluptate repudiandae',
+        );
+      });
+    });
+
+    describe('checking the shortest title', () => {
+      it('should have the shortest title last', async () => {
+        const result = await getPhotosSortedByTitle();
+
+        expect(result[result.length - 1].title).toBe(
+          'reprehenderit est deserunt velit ipsam',
+        );
+      });
     });
   });
 
@@ -81,11 +98,12 @@ describe('the getPhotosSortedByTitle function', () => {
       getPhotos.mockResolvedValue([]);
     });
 
-    it('should return an empty array', async () => {
-      const result = await getPhotosSortedByTitle();
+    describe('returning the result', () => {
+      it('should return an empty array', async () => {
+        const result = await getPhotosSortedByTitle();
 
-      expect(getPhotos).toHaveBeenCalled();
-      expect(result).toEqual([]);
+        expect(result).toEqual([]);
+      });
     });
   });
 
@@ -109,11 +127,18 @@ describe('the getPhotosSortedByTitle function', () => {
       ]);
     });
 
-    it('should handle identical lengths correctly', async () => {
-      const result = await getPhotosSortedByTitle();
+    describe('returning the result', () => {
+      it('should return correct number of photos', async () => {
+        const result = await getPhotosSortedByTitle();
 
-      expect(result).toHaveLength(2);
-      expect(result[0].title.length).toBe(result[1].title.length);
+        expect(result).toHaveLength(2);
+      });
+
+      it('should handle identical lengths correctly', async () => {
+        const result = await getPhotosSortedByTitle();
+
+        expect(result[0].title.length).toBe(result[1].title.length);
+      });
     });
   });
 
@@ -124,11 +149,20 @@ describe('the getPhotosSortedByTitle function', () => {
       });
     });
 
-    it('should return empty array', async () => {
-      const result = await getPhotosSortedByTitle();
+    describe('calling the function', () => {
+      it('should call getPhotos', async () => {
+        await getPhotosSortedByTitle();
 
-      expect(getPhotos).toHaveBeenCalled();
-      expect(result).toEqual([]);
+        expect(getPhotos).toHaveBeenCalled();
+      });
+    });
+
+    describe('returning the result', () => {
+      it('should return empty array', async () => {
+        const result = await getPhotosSortedByTitle();
+
+        expect(result).toEqual([]);
+      });
     });
   });
 });
